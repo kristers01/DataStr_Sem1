@@ -2,23 +2,23 @@ package datastr;
 
 import java.util.ArrayList;
 
-public class MyArrayList {
+public class MyArrayList<Ttype> {
 
-	private int[] list;
+	private Ttype[] list;
 	private final int LIST_DEFAULT_SIZE = 10;
 	private int size = LIST_DEFAULT_SIZE;
 	private int counter = 0;
 	
 	//constructors
 	public MyArrayList() {
-		list = new int[size];
+		list = (Ttype[]) new Object[size];
 	}
 	
 	public MyArrayList(int inputSize) {
 		if(inputSize > 0) {
 			size = inputSize;
 		}
-		list = new int[size];
+		list = (Ttype[]) new Object[size];
 	}
 	
 	//isEmpty
@@ -51,7 +51,7 @@ public class MyArrayList {
 	//3. apreķināt newSize
 		int newSize = (counter <= 100)? size * 2 : (int)(size * 1.5);
 	//4. izveidot listNew ar newSize izmeru
-		int[] listNew = new int[newSize];
+		Ttype[] listNew = (Ttype[]) new Object[newSize];
 	//5. veikt kopēsanu no veca masīva uz jauno
 		for(int i = 0; i < size; i++) {
 			listNew[i] = list[i];
@@ -68,7 +68,7 @@ public class MyArrayList {
 	
 
 	//1. funkcijas deklarācija
-	public void add(int element)
+	public void add(Ttype element)
 	{
 		//2. pārbaude isFull - tad resize izsaukums
 		if(isFull()) resize();
@@ -80,7 +80,7 @@ public class MyArrayList {
 	
 
 	//1. funkcijas deklarācija
-	public void add(int index, int element) throws Exception 
+	public void add(int index, Ttype element) throws Exception 
 	{
 	//2. pārbaudes
 	//2.1. par indeksu, ja nav pareizs, tad izmest izņēmumu
@@ -131,7 +131,7 @@ public class MyArrayList {
 	}
 	
 	//TODO int funkcijas tips jamaina uz citu tipu pēc nepieciešamībs
-	public int get(int index) throws Exception{
+	public Ttype get(int index) throws Exception{
 		
 		if(isEmpty()) throw new Exception("Array is empty and it "
 				+ "is not possible to return element");
@@ -144,7 +144,7 @@ public class MyArrayList {
 		return list[index];
 	}
 	
-	public ArrayList search(int element) throws Exception{
+	public ArrayList search(Ttype element) throws Exception{
 		if(isEmpty()) throw new Exception("Array is empty and it "
 				+ "is not possible to seacrh element");
 		
@@ -152,7 +152,7 @@ public class MyArrayList {
 		
 		for(int i = 0; i < counter; i++)
 		{
-			if(list[i] == element)
+			if(list[i].equals(element))
 			{
 				indexes.add(i);
 			}
@@ -165,7 +165,7 @@ public class MyArrayList {
 
 	}
 	
-	public int[] getNeighbours(int element) throws Exception{
+	public Ttype[] getNeighbours(Ttype element) throws Exception{
 		ArrayList indexes = search(element);
 		
 		int neighboursSize = indexes.size();
@@ -173,7 +173,7 @@ public class MyArrayList {
 		if((Integer)indexes.get(indexes.size()-1) == (counter-1))
 			neighboursSize--;
 		
-		int[] neighbours = new int[neighboursSize];
+		Ttype[] neighbours = (Ttype[])new Object[neighboursSize];
 		for(int i = 0; i < neighboursSize; i++) {
 			int indexFromSearchTemp = (int)indexes.get(i);
 			int indexNeighbourTemp = indexFromSearchTemp+1;
@@ -202,7 +202,7 @@ public class MyArrayList {
 	public void makeEmpty() {
 		counter = 0;
 		size = LIST_DEFAULT_SIZE;
-		list = new int[size];
+		list = (Ttype[])new Object[size];
 		System.gc();	
 	}
 	
@@ -213,7 +213,9 @@ public class MyArrayList {
 		
 		for(int i = 0; i < counter; i++) {
 			for(int j = 0; j < counter; j++) {
-				if(list[i]> list[j]) {
+				//if(list[i]> list[j]) {
+			
+				if(((Comparable)(list[i])).compareTo(list[j]) == 1 ){
 					swap(i, j);
 				}
 			}
@@ -222,7 +224,7 @@ public class MyArrayList {
 	}
 	
 	private void swap(int index1, int index2) {
-		int temp = list[index1];
+		Ttype temp = list[index1];
 		list[index1] = list[index2];
 		list[index2] = temp;
 		
